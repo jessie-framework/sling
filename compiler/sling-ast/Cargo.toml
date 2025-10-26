@@ -1,0 +1,11 @@
+[package]
+name = "sling-ast"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+bincode = { version = "2.0.1", features = ["derive"] }
+bumpalo = "3.19.0"
+putbackpeekmore = "0.1.1"
+sling-cache = { version = "0.1.0", path = "../sling-cache" }
+sling-globals = { version = "0.1.0", path = "../sling-globals" }
