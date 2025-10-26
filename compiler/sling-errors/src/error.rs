@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 pub trait Error {
     fn throw(&self) {
         print!("ERROR: {}", self.name());

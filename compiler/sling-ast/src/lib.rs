@@ -1,11 +1,9 @@
 pub mod tokenizer;
 
-use bumpalo::Bump;
-
 use crate::tokenizer::{Token, Tokenizer};
 use sling_globals::GLOBALS;
 pub fn generate_ast(input: &str) -> Result<(), std::io::Error> {
-    let (loader, loader_link) = FileLoader::new((GLOBALS).file.clone())?;
+    let (_loader, loader_link) = FileLoader::new((GLOBALS).file.clone())?;
     let (mut token_loader, token_loader_link) = TokenLoader::new(loader_link);
     token_loader.tokenize(input);
     token_loader.upload(token_loader_link);

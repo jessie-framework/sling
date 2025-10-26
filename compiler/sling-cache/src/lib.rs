@@ -4,7 +4,6 @@ use sling_globals::GLOBALS;
 use std::collections::hash_map::DefaultHasher;
 use std::fs::File;
 use std::hash::{Hash, Hasher};
-use std::io::Write;
 use std::path::PathBuf;
 
 pub trait Cached: Encode + Decode<()> + Hash {
@@ -23,7 +22,7 @@ pub trait Cached: Encode + Decode<()> + Hash {
                     match decoded {
                         Ok((v, _)) => *self = v,
                         Err(_) => {
-                            std::fs::remove_file(file);
+                            let _ = std::fs::remove_file(file);
                         }
                     }
                 }
@@ -38,10 +37,7 @@ pub trait Cached: Encode + Decode<()> + Hash {
         self.hash(&mut hasher);
         let hash = hasher.finish();
         let cache_dir = GLOBALS.cache.as_ref();
-        match cache_dir {
-            Some(path) => Some(path.join(format!("{}.slc", hash))),
-            _ => None,
-        }
+        cache_dir.map(|path| path.join(format!("{}.slc", hash)))
     }
 
     fn upload(&self, link: Link) {
