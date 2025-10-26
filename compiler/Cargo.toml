@@ -1,0 +1,3 @@
+[workspace]
+resolver = "3"
+members = ["slingc","sling-globals","sling-errors","sling-cache","sling-ast","sling-args"]
