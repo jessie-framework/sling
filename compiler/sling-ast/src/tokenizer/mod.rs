@@ -1,8 +1,6 @@
-use bumpalo::Bump;
 use putbackpeekmore::PutBackPeekMore;
-use sling_cache::Cached;
 use sling_cache::{Decode, Encode};
-use std::{path::PathBuf, str::Chars};
+use std::str::Chars;
 mod reader;
 
 pub struct Tokenizer<'chars> {
@@ -253,7 +251,7 @@ impl<'chars> Tokenizer<'chars> {
 
     #[inline]
     pub(crate) fn consume_string(&mut self) -> Token {
-        let mut record = self.start_record();
+        let record = self.start_record();
         self.advance_stream();
         loop {
             let peek = self.peek_stream();
@@ -262,7 +260,7 @@ impl<'chars> Tokenizer<'chars> {
                     self.advance_stream();
                     return Token::String(self.end_record(record));
                 }
-                Some(v) => {
+                Some(_v) => {
                     // if *v == '\\' {
                     //     out.push(self.consume_escaped_char())
                     // } else {
@@ -278,6 +276,7 @@ impl<'chars> Tokenizer<'chars> {
         }
     }
 
+    #[allow(dead_code)]
     pub(crate) fn consume_escaped_char(&mut self) -> char {
         self.advance_stream();
         match self.peek_stream_value(2) {
@@ -305,7 +304,7 @@ impl<'chars> Tokenizer<'chars> {
 
     #[inline]
     pub(crate) fn consume_digit_token(&mut self) -> Token {
-        let mut record = self.start_record();
+        let record = self.start_record();
         loop {
             let peek = self.peek_stream();
             if let Some(v) = peek
@@ -355,7 +354,7 @@ impl<'chars> Tokenizer<'chars> {
     }
     #[inline]
     pub(crate) fn consume_ident_token(&mut self) -> Token {
-        let mut record = self.start_record();
+        let record = self.start_record();
         loop {
             let peek = self.peek_stream();
             if let Some(v) = peek
